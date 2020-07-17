@@ -1,0 +1,87 @@
+set nocompatible
+
+let mapleader=" "
+
+
+let g:ycm_python_interpreter_path = ''
+let g:ycm_python_sys_path = []
+let g:ycm_extra_conf_vim_data = [
+  \  'g:ycm_python_interpreter_path',
+  \  'g:ycm_python_sys_path'
+  \]
+let g:ycm_global_ycm_extra_conf = '~/global_extra_conf.py'
+
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_auto_hover = ''
+let b:ycm_hover={'command' : 'GetDoc', 'syntax' : ''}
+augroup MyYCMCustom
+  autocmd!
+  autocmd FileType py let b:ycm_hover = {
+    \ 'command': 'GetDoc',
+    \ 'syntax': ''
+    \ }
+augroup END
+
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+map <leader>d  :YcmCompleter GoToType<CR>
+map <leader>t  :YcmCompleter GetType<CR>
+map <leader>r  :YcmCompleter GoToReferences<CR>
+map <leader>h :syntax off<CR><plug>(YCMHover):syntax on<CR>
+"nmap <leader>h <plug>(YCMHover)
+
+filetype off
+filetype plugin indent on
+
+syntax enable
+
+set ttyfast
+
+set laststatus=2
+set encoding=utf-8
+set autoread
+set autoindent
+set backspace=indent,eol,start
+set incsearch
+set hlsearch
+
+
+set hidden
+set visualbell
+set number
+set nobackup
+set noswapfile
+set noshowmode
+
+" Set the terminal's title
+set title
+
+" Global tab width.
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+
+" Set to show invisibles (tabs & trailing spaces) & their highlight color
+set list listchars=tab:»\ ,trail:·
+
+if has("autocmd")
+  " StripTrailingWhitespaces
+  autocmd BufWritePre * Stripwhitespace
+
+" To spell check all git commit messages
+  au BufNewFile,BufRead COMMIT_EDITMSG set spell nonumber nolist wrap linebreak
+
+  " Set filetype tab settings
+  autocmd FileType python,doctest set tabstop=4 | set softtabstop=4 | set shiftwidth=4 | set textwidth=79 | set expandtab | set autoindent | set fileformat=unix | set encoding=utf-8 | syntax enable | set nu | set foldmethod=indent | set et
+
+"  autocmd FileType python,doctest set ai ts=4 sw=4 sts=4 et
+
+  autocmd FileType c set nu | set autoindent | set et | set ts=4 | set sw=4 | set foldmethod=syntax | setlocal formatoptions-=r | setlocal formatoptions-=o
+
+  autocmd FileType sh set nu | set autoindent | set et| set ts=4 | set sw=4 | set foldmethod=syntax
+
+  autocmd BufReadPost *
+  \ if line("'\"") > 1 && line("'\"") <= line("$") |
+  \   exe "normal! g`\"" |
+  \ endif
+endif
